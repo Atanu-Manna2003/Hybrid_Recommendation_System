@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - Recommendation System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --primary-light: #a29bfe;
+            --secondary: #00cec9;
+            --secondary-dark: #00a8a8;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --gray: #636e72;
+            --light-gray: #dfe6e9;
+            --gradient-primary: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            --gradient-secondary: linear-gradient(135deg, #00cec9 0%, #81ecec 100%);
+            --gradient-warning: linear-gradient(135deg, #fdcb6e 0%, #ffeaa7 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f6fa;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: var(--gradient-primary);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 i {
+            color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn.primary {
+            background: white;
+            color: var(--primary);
+            border: none;
+        }
+        
+        .btn.primary:hover {
+            background: var(--light-gray);
+            color: var(--primary-dark);
+        }
+        
+        .btn.outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+        }
+        
+        .btn.outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+        
+        .btn.logout {
+            color: white;
+            background: rgba(214, 48, 49, 0.8);
+            border: none;
+        }
+        
+        .btn.logout:hover {
+            background: var(--danger);
+        }
+        
+        header span {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+        
+        main {
+            padding: 40px 0;
+            flex: 1;
+        }
+        
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        p.subtitle {
+            font-size: 16px;
+            color: var(--gray);
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+        
+        .search-form {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.1);
+            margin-top: 30px;
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-primary);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+        
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        }
+        
+        .form-group i {
+            position: absolute;
+            right: 15px;
+            top: 38px;
+            color: var(--primary-light);
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 206, 201, 0.03) 0%, rgba(0, 206, 201, 0.1) 100%);
+            z-index: 0;
+        }
+        
+        .info-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--secondary-dark);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .info-card p {
+            font-size: 15px;
+            color: var(--gray);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: auto;
+        }
+        
+        footer p {
+            opacity: 0.8;
+        }
+        
+        .flash-message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .flash-message::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+        }
+        
+        .flash-success {
+            background-color: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+            border-left: 5px solid var(--success);
+        }
+        
+        .flash-warning {
+            background-color: rgba(253, 203, 110, 0.1);
+            color: #e17055;
+            border-left: 5px solid #e17055;
+        }
+        
+        .flash-danger {
+            background-color: rgba(214, 48, 49, 0.1);
+            color: var(--danger);
+            border-left: 5px solid var(--danger);
+        }
+        
+        .search-tips {
+            margin-top: 40px;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(108, 92, 231, 0.1);
+        }
+        
+        .search-tips h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tips-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(108, 92, 231, 0.03);
+            transition: all 0.3s ease;
+        }
+        
+        .tip-item:hover {
+            background: rgba(108, 92, 231, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .tip-item i {
+            color: var(--primary);
+            margin-top: 3px;
+            font-size: 18px;
+        }
+        
+        .tip-item span {
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .tips-list {
+                grid-template-columns: 1fr;
+            }
+            
+            header .container {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            nav {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            h2 {
+                font-size: 28px;
+            }
+            
+            .search-form {
+                padding: 20px;
+            }
+        }
+        
+        /* Animated background elements */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .bg-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: -150px;
+            right: -150px;
+        }
+        
+        .bg-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--secondary);
+            bottom: -100px;
+            left: -100px;
+        }
+        
+        /* Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Submit button enhancements */
+        .submit-btn {
+            position: relative;
+            overflow: hidden;
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 12px 24px;
+        }
+        
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover::after {
+            left: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-element bg-1 floating"></div>
+    <div class="bg-element bg-2 floating" style="animation-delay: 2s;"></div>
+    
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-robot"></i> Recommendation System</h1>
+            <nav>
+                <a href="/" class="btn outline"><i class="fas fa-home"></i> Home</a>
+                {% if logged_in %}
+                    <span>Welcome, User {{ session['user_id'] }}</span>
+                    <a href="/logout" class="btn logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                {% else %}
+                    <a href="/login" class="btn outline"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="/register" class="btn primary"><i class="fas fa-user-plus"></i> Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }} flash-message">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>Discover Similar Products</h2>
+        <p class="subtitle">Tell us about a product you like and we'll find perfect matches for you using our advanced recommendation algorithms</p>
+        
+        {% if not logged_in %}
+        <div class="info-card">
+            <h3><i class="fas fa-star"></i> For Better Recommendations</h3>
+            <p>Logged-in users receive personalized recommendations based on their profile and browsing history. Our system learns your preferences over time to deliver more accurate results.</p>
+            <div class="auth-buttons">
+                <a href="/login" class="btn outline"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="/register" class="btn primary"><i class="fas fa-user-plus"></i> Register</a>
+            </div>
+        </div>
+        {% endif %}
+        
+        <form method="POST" action="/search" class="search-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Product Name</label>
+                    <input type="text" id="name" name="name" placeholder="e.g., Wireless Headphones">
+                    <i class="fas fa-tag"></i>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price Range ($)</label>
+                    <input type="number" step="0.01" id="price" name="price" placeholder="Your target price">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="c0_name">Main Category</label>
+                    <input type="text" id="c0_name" name="c0_name" placeholder="e.g., Electronics">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="form-group">
+                    <label for="c1_name">Subcategory</label>
+                    <input type="text" id="c1_name" name="c1_name" placeholder="e.g., Audio">
+                    <i class="fas fa-folder"></i>
+                </div>
+                <div class="form-group">
+                    <label for="c2_name">Specific Type</label>
+                    <input type="text" id="c2_name" name="c2_name" placeholder="e.g., Headphones">
+                    <i class="fas fa-tags"></i>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="brand_name">Brand Preference</label>
+                    <input type="text" id="brand_name" name="brand_name" placeholder="Preferred brand (optional)">
+                    <i class="fas fa-copyright"></i>
+                </div>
+                <div class="form-group">
+                    <label for="item_condition_name">Condition</label>
+                    <select id="item_condition_name" name="item_condition_name">
+                        <option value="">Any Condition</option>
+                        <option value="New">New</option>
+                        <option value="Used - Like New">Used - Like New</option>
+                        <option value="Used - Good">Used - Good</option>
+                        <option value="Used - Fair">Used - Fair</option>
+                    </select>
+                    <i class="fas fa-certificate"></i>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn primary submit-btn" style="margin-top: 10px;">
+                <i class="fas fa-search"></i> Find Recommendations
+            </button>
+        </form>
+        
+        <div class="search-tips">
+            <h3><i class="fas fa-lightbulb"></i> Search Tips</h3>
+            <div class="tips-list">
+                <div class="tip-item">
+                    <i class="fas fa-magic"></i>
+                    <span>The more details you provide, the better our AI-powered recommendations will be</span>
+                </div>
+                <div class="tip-item">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>You don't need to fill all fields - start with just a product name and refine later</span>
+                </div>
+                <div class="tip-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Logged-in users get personalized results based on their browsing and purchase history</span>
+                </div>
+                <div class="tip-item">
+                    <i class="fas fa-random"></i>
+                    <span>Try different combinations to explore more options and discover new favorites</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Recommendation System. Powered by AI and machine learning.</p>
+        </div>
+    </footer>
+</body>
+</html>

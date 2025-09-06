@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Recommendation System</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo">Product<span>Recs</span></h1>
+                <nav>
+                    {% if logged_in %}
+                        <span class="welcome-msg">  Welcome, {{ username }}</span>
+                        <a href="/search" class="btn nav-btn">Search Products</a>
+                        <a href="/logout" class="btn nav-btn logout">Logout</a>
+                    {% else %}
+                        <a href="/login" class="btn nav-btn">Login</a>
+                        <a href="/register" class="btn nav-btn primary">Register</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Discover Products Tailored for You</h2>
+                <p class="hero-subtitle">Get personalized recommendations based on your preferences and browsing history.</p>
+                
+                <form method="POST" action="/search" class="hero-search-form">
+                    <div class="search-input-group">
+                        <input type="text" name="name" placeholder="Search for products..." required>
+                        <button type="submit" class="btn primary search-btn">
+                            <span>Search</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="hero-image"></div>
+        </section>
+
+        {% if not logged_in %}
+        <section class="info-section">
+            <div class="info-card">
+                <div class="info-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                    </svg>
+                </div>
+                <h3>For Better Recommendations</h3>
+                <p>Create an account to get personalized recommendations based on your profile and preferences.</p>
+                <a href="/register" class="btn cta-btn">Register Now</a>
+            </div>
+        </section>
+        {% endif %}
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2023 ProductRecs. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

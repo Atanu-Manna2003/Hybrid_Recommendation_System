@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Recommendations - Recommendation System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Recommendation System</h1>
+            <nav>
+                <a href="/" class="btn">Home</a>
+                <a href="/search" class="btn">Search Products</a>
+                <a href="/logout" class="btn logout">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="user-profile">
+            <h2>Your Profile</h2>
+            <div class="profile-card">
+                <div class="profile-info">
+                    <p><strong>Age:</strong> {{ user_info.age }}</p>
+                    <p><strong>Gender:</strong> {{ user_info.gender }}</p>
+                    <p><strong>Location:</strong> {{ user_info.location }}</p>
+                    <p><strong>Income:</strong> ${{ user_info.income }}</p>
+                </div>
+                <a href="/register" class="btn">Edit Profile</a>
+            </div>
+        </section>
+
+        <section class="recommendations-section">
+            <h2>Recommended For You</h2>
+            <p>Based on users with similar profiles</p>
+            
+            <div class="recommendations">
+                {% if recommendations %}
+                    {% for item in recommendations %}
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/150?text=Product+{{ loop.index }}" alt="Product Image">
+                        </div>
+                        <div class="product-details">
+                            <h3>{{ item.name }}</h3>
+                            <div class="product-meta">
+                                <span class="brand">{{ item.brand_name }}</span>
+                                <span class="price">${{ "%.2f"|format(item.price) }}</span>
+                            </div>
+                            <div class="score">Match: {{ "%.0f"|format(item.weighted*100) }}%</div>
+                            <div class="product-id">ID: {{ item.item_id }}</div>
+                            <button class="btn">View Details</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-results">No recommendations found based on your profile.</p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Recommendation System. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

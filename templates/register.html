@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Recommendation System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --secondary: #00cec9;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --gray: #adb5bd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark);
+        }
+        
+        .auth-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            margin: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+        
+        .auth-container p {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group label.required::after {
+            content: '*';
+            color: var(--danger);
+            margin-left: 4px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn.primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .auth-link {
+            text-align: center;
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .auth-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-success {
+            background-color: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        .alert-warning {
+            background-color: rgba(253, 203, 110, 0.1);
+            color: #e17055;
+            border-left: 4px solid #e17055;
+        }
+        
+        .alert-danger {
+            background-color: rgba(214, 48, 49, 0.1);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .benefits-list {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .benefits-list h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .benefit-item i {
+            color: var(--primary);
+            margin-top: 2px;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .auth-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h1>Create Your Account</h1>
+        <p>Register to get personalized recommendations tailored just for you</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" action="/register" class="auth-form">
+            <div class="form-group">
+                <label for="user_id" class="required">User ID</label>
+                <input type="text" id="user_id" name="user_id" required placeholder="Enter unique ID">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" placeholder="Your age">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                        <option value="Unknown" selected>Prefer not to say</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="Your city/country">
+            </div>
+            
+            <div class="form-group">
+                <label for="income">Annual Income ($)</label>
+                <input type="number" id="income" name="income" placeholder="Approximate income">
+            </div>
+            
+            <button type="submit" class="btn primary">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+            
+            <p class="auth-link">Already have an account? <a href="/login">Login here</a></p>
+        </form>
+        
+        <div class="benefits-list">
+            <h3>By registering, you'll enjoy:</h3>
+            <div class="benefit-item">
+                <i class="fas fa-bolt"></i>
+                <span>Personalized recommendations based on your preferences</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Improved suggestions the more you use the system</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-heart"></i>
+                <span>Ability to save favorites and create lists</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-bell"></i>
+                <span>Custom notifications for new recommendations</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
